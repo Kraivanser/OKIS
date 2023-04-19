@@ -1,0 +1,413 @@
+import java.util.Scanner;
+public class Combination {
+    static Scanner scan = new Scanner(System.in);
+    public static void main(String[] args) {
+        System.out.println("Введите два числа");
+        int n = scan.nextInt();
+        int k = scan.nextInt();
+        System.out.println("Введите строку");
+        String str = scan.next();
+        double c1 = combination(n,k);
+        double c2 = sumWithN(n);
+        double c3 = sumWithM(k);
+        double c4 = nuton(n,k);
+        double c5 = multyplyString(str);
+        System.out.println(c5);
+    }
+    public static double combination(int n, int k){
+        int factorialN = 1;
+        int factorialK = 1;
+        int factorialNK = 1;
+        for (int i = 1; i <= n; i++) {
+            factorialN *= i;
+            if (i <= k) {
+                factorialK *= i;
+            }
+            if (i <= n-k) {
+                factorialNK = i;
+            }
+        }
+        return (double)factorialN/(factorialK*factorialNK);
+    }
+    public static double sumWithN(int n){
+            double SN = 0, d = 0, z = 1;
+            for (int i = 1; i <= n; i++) {
+                d += Math.cos(Math.toRadians(i));
+                if (i % 2 == 0) {
+                    z *= Math.cos(Math.toRadians(i));
+                } else {
+                    z *= Math.sin(Math.toRadians(i));
+                }
+                SN += d / z;
+            }
+            return SN;
+    }
+    public static double sumWithM(int k){
+        double S = 0, d = 0, z = 1;
+        int i = 0;
+        while (S < k) {
+            i++;
+            d += Math.cos(Math.toRadians(i));
+            if (i % 2 == 0) {
+                z *= Math.cos(Math.toRadians(i));
+            } else {
+                z *= Math.sin(Math.toRadians(i));
+            }
+            S += d / z;
+        }
+        if (S > k) {
+            S -= d / z;
+        }
+        return S;
+    }
+    public static double nuton(double x, double st){
+        double y0 = Math.pow(Math.exp(1), Math.log(x*(st+1))/st), y1 = 0, e = 0.01;
+        int n = 0;
+        while (Math.abs(y1 - y0) > e) {
+            y1 = 1 / st * ((st - 1) * y0 + x / Math.pow(y0, st - 1));
+            y0 = y1;
+            n++;
+            y1 = 1 / st * ((st - 1) * y0 + x / Math.pow(y0, st - 1));
+            if ((e >= 0.000001) && (Math.abs(y1 - y0) < e)){
+                e /= 10;
+                y0 = Math.pow(Math.exp(1), Math.log(x*(st+1))/st);
+                y1 = 0;
+                n = 0;
+            }
+        }
+        return y1;
+    }
+    public static double multyplyString(String s){
+        int sh = 1;
+        char[] M = s.toCharArray();
+        for (int i = 0; i < M.length ;i++) {
+            for (int k = 49; k <= 57; k++) {
+                if (M[i] == k) {
+                    sh *= (M[i]-48) ;
+                }
+            }
+        }
+        int k = 48;
+        for (int i = 0; i < M.length ;i++) {
+            if (M[i] == k) {
+                sh = 0 ;
+            }
+        }
+        return sh;
+    }
+    public static int[][] matrixMultiplication(int[][] firstMatrix, int[][] secondMatrix) {
+        int m = firstMatrix.length;
+        int n = secondMatrix[0].length;
+        int[][] result = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < firstMatrix[0].length; k++) {
+                    result[i][j] += firstMatrix[i][k] * secondMatrix[k][j];
+                }
+            }
+        }
+        return result;
+    }
+}
+--------------------------------------------
+import java.util.Scanner;
+public class HitinOblast {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Введите координату x");
+        double x = scan.nextDouble();
+        System.out.println("Введите координату y");
+        double y = scan.nextDouble();
+        answer(x,y);
+    }
+
+    public static boolean MainO(double x, double y) {
+        if ((x < 0) && (y >= 0) && (Math.pow(x, 2) + Math.pow(y, 2) <= 36)) {
+            if (Math.pow((x + 3), 2) + Math.pow((y - 3), 2) < 1) {
+                return false;
+            } else {
+                if ((x > -5) && (y >= 0) && (y < (-1 / 3f) * x + (1 / 3f)) && (x<-2)) {
+                    return false;
+                } else {
+                    if ((x < 0) && (y >= 0) && (y < (3 / 2f) * x + 4) && (x>-2)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean right(double x, double y) {
+        if ((x >= 0) && (y <= 4) && (y >= 0) && (y >= (-1 / 2f) * x + 1) && (y <= (-4 / 3f) * x + (20 / 3f))) {
+            if (Math.pow((x - 2), 2) + Math.pow((y - 2), 2) < 1) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+
+    }
+    public static double answer(double x, double y){
+        if (MainO(x,y) || right(x,y)){
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+}
+------------------------------------------
+public class gauss {
+
+    public static void main(String[] args) {
+        double [][] matr = {{2,1,-1,8,7},
+                {-3,-1,2,-11,6},
+                {-2,1,2,-3,5},
+                {1,2,3,4,5}};
+        gauss(matr);
+    }
+    public static double[] gauss(double[][]matr){
+        return printX(Triangle(matr));
+    }
+    public static double [] umn(double [] arr, double number) {
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] *= number;
+        }
+        return arr;
+    }
+
+    public static double [] Vishet(double [] firstArr, double [] secondArr) {
+        double subst;
+        for (int i = 0; i < firstArr.length; i++) {
+            subst = secondArr[i] - firstArr[i];
+            firstArr[i] = subst;
+        }
+        return firstArr;
+    }
+
+    public static double [][] Triangle(double [][] Matrix) {
+        double [][] triangleFormMatr = Matrix.clone();
+        double [] tmpRow;
+        double factor;
+        for (int i = 0; i < triangleFormMatr.length; i++) {
+            tmpRow = triangleFormMatr[i];
+            for (int j = i + 1; j < triangleFormMatr.length; j++) {
+                factor = tmpRow[i]/triangleFormMatr[j][i];
+                triangleFormMatr[j] = umn(triangleFormMatr[j], factor);
+                triangleFormMatr[j] = Vishet(triangleFormMatr[j], tmpRow);
+            }
+        }
+        return triangleFormMatr;
+    }
+
+    static double[] printX(double [][] trianglMatrix) {
+        double [] X = new double[trianglMatrix.length];
+        for (int i = trianglMatrix.length - 1; i >= 0 ; i--) {
+            X[i] =  getRoot(trianglMatrix[i], X, i);
+        }
+        return X;
+    }
+
+    public static double getRoot(double [] otvet, double [] roots, int numRoot) {
+        double summ = 0;
+        for (int i = 0; i < roots.length; i++) {
+            if (i != numRoot)
+                summ += otvet[i] * roots[i];
+        }
+        return (otvet[otvet.length - 1] - summ)/otvet[numRoot];
+    }
+}
+------------------------------
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите число в исходной системе: ");
+        String number = scanner.nextLine();
+        System.out.print("Введите исходную систему счисления (от 2 до 36): ");
+        int sourceBase = scanner.nextInt();
+        System.out.print("Введите целевую систему счисления (от 2 до 36): ");
+        int targetBase = scanner.nextInt();
+        translate(number,sourceBase,targetBase);
+        System.out.println(translate(number,sourceBase,targetBase));
+    }
+    public static String translate(String number,int sourceBase,int targetBase){
+        String result = convertBase(number, sourceBase, targetBase);
+        return result;
+    }
+
+    public static String convertBase(String number, int sourceBase, int targetBase) {
+        // Перевод числа в 10-ую систему счисления
+        int decimal = convertToDecimal(number, sourceBase);
+        // Перевод числа из 10-ой системы счисления в целевую систему счисления
+        String result = convertFromDecimal(decimal, targetBase);
+        return result;
+    }
+
+    public static int convertToDecimal(String number, int sourceBase) {
+        int decimal = 0;
+        int power = 1;
+        for (int i = number.length() - 1; i >= 0; i--) {
+            int digit = getDigitValue(number.charAt(i));
+            if (digit >= sourceBase) {
+                throw new IllegalArgumentException("Цифра " + number.charAt(i) +
+                        " больше или равна основанию " + sourceBase);
+            }
+            decimal += digit * power;
+            power *= sourceBase;
+        }
+        return decimal;
+    }
+
+    public static String convertFromDecimal(int decimal, int targetBase) {
+        StringBuilder result = new StringBuilder();
+        while (decimal > 0) {
+            int digit = decimal % targetBase;
+            result.append(getDigitSymbol(digit));
+            decimal = decimal / targetBase;
+        }
+        return result.reverse().toString();
+    }
+
+    private static int getDigitValue(char digit) {
+        if (digit >= '0' && digit <= '9') {
+            return digit - '0';
+        } else {
+            return digit - 'A' + 10;
+        }
+    }
+
+    private static char getDigitSymbol(int digitValue) {
+        if (digitValue >= 0 && digitValue <= 9) {
+            return (char) ('0' + digitValue);
+        } else {
+            return (char) ('A' + digitValue - 10);
+        }
+    }
+}
+------------------------------------
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+public class TestCombination {
+    @Test
+    public static void Combination() {
+        final int FIRST_NUMBER = 7;
+        final int SECOND_NUMBER = 5;
+        double ExpectedRecult = 21;
+        double AcshualRecult;
+
+        AcshualRecult = Combination.combination(FIRST_NUMBER, SECOND_NUMBER);
+        Assert.assertEquals(AcshualRecult, ExpectedRecult);
+    }
+    @Test
+    public static void SumWithNTest() {
+        final int FIRST_NUMBER = 2;
+        double ExpectedRecult = 171.9135325295608;
+        double AcshualRecult;
+
+        AcshualRecult = Combination.sumWithN(FIRST_NUMBER);
+        Assert.assertEquals(AcshualRecult, ExpectedRecult);
+    }
+    @Test
+    public static void SumWithMTest() {
+        final int FIRST_NUMBER = 80;
+        double ExpectedRecult = 57.289961630759436;
+        double AcshualRecult;
+
+        AcshualRecult = Combination.sumWithM(FIRST_NUMBER);
+        Assert.assertEquals(AcshualRecult, ExpectedRecult);
+    }
+    @Test
+    public static void NutonTest() {
+        final int FIRST_NUMBER = 5;
+        final int SECOND_NUMBER = 5;
+        double ExpectedRecult = 1.379729661461215;
+        double AcshualRecult;
+
+        AcshualRecult = Combination.nuton(FIRST_NUMBER,SECOND_NUMBER);
+        Assert.assertEquals(AcshualRecult, ExpectedRecult);
+    }
+    @Test
+    public static void Translate() {
+        final String FIRST_NUMBER = "55";
+        final int SECOND_NUMBER = 10;
+        final int THIRD_NUMBER = 2;
+        String ExpectedRecult = "110111";
+        String AcshualRecult;
+
+        AcshualRecult = Main.translate(FIRST_NUMBER,SECOND_NUMBER,THIRD_NUMBER);
+        Assert.assertEquals(AcshualRecult, ExpectedRecult);
+    }
+    @Test
+    public static void MyltiplyStringTest() {
+        final String FIRST_NUMBER = "55";
+        double ExpectedRecult = 25;
+        double AcshualRecult;
+
+        AcshualRecult = Combination.multyplyString(FIRST_NUMBER);
+        Assert.assertEquals(AcshualRecult, ExpectedRecult);
+    }
+    @Test
+    public static void hitinOblastTest() {
+        final int FIRST_NUMBER = 2;
+        final int SECOND_NUMBER = 1;
+        double ExpectedRecult = 1;
+        double AcshualRecult;
+
+        AcshualRecult = HitinOblast.answer(FIRST_NUMBER,SECOND_NUMBER);
+        Assert.assertEquals(AcshualRecult, ExpectedRecult);
+    }
+    @Test
+    public static void MatrixMyltiply() {
+        final int[][] FIRST_NUMBER = {{1, 2, 3}, {4, 5, 6}};
+        final int[][] SECOND_NUMBER = {{7, 8}, {9, 10}, {11, 12}};
+        int[][] ExpectedRecult = {{58, 64}, {139, 154}} ;
+        int[][] AcshualRecult;
+
+        AcshualRecult = Combination.matrixMultiplication(FIRST_NUMBER,SECOND_NUMBER);
+        Assert.assertEquals(AcshualRecult, ExpectedRecult);
+    }
+    @Test
+    public static void Gauss() {
+        final double[][] FIRST_NUMBER = {{2, 2, 6}, {6, 2, 7}};
+        double[] ExpectedRecult = {0.25, 2.75};
+        double[] AcshualRecult;
+
+        AcshualRecult = gauss.gauss(FIRST_NUMBER);
+        Assert.assertEquals(AcshualRecult, ExpectedRecult);
+    }
+}
+--------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>calc2</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+    <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <version>7.7.1</version>
+        <scope>test</scope>
+    </dependency>
+    </dependencies>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+
+</project>

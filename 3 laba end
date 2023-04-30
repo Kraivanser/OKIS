@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>calc2</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+    <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <version>7.7.1</version>
+        <scope>test</scope>
+    </dependency>
+    </dependencies>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+    
+
+</project>
+-------------------
+import java.util.Scanner;
+public class Mathematics {
+    static Scanner scan = new Scanner(System.in);
+    public static void main(String[] args) {
+        System.out.println("Введите два числа");
+        int n = scan.nextInt();
+        int k = scan.nextInt();
+        System.out.println("Введите строку");
+        String str = scan.next();
+        double c1 = combination(n,k);
+        double c2 = sumWithN(n);
+        double c3 = sumWithM(k);
+        double c4 = nuton(n,k);
+        System.out.println(c4);
+    }
+    public static double combination(int n, int k){
+        int factorialN = 1;
+        int factorialK = 1;
+        int factorialNK = 1;
+        if (n < 0 || k < 0 || n < k){
+            throw new IllegalArgumentException("Введены недопустимые n или k n < 0 || k < 0 || n < k");
+        }
+        for (int i = 1; i <= n; i++) {
+            factorialN *= i;
+            if (i <= k) {
+                factorialK *= i;
+            }
+            if (i <= n - k) {
+                factorialNK = i;
+            }
+        }
+        return (double) factorialN / (factorialK * factorialNK);
+    }
+    public static double sumWithN(int n){
+            double SN = 0, d = 0, z = 1;
+        if (n < 0 ){
+            throw new IllegalArgumentException("n не может быть меньше 0");
+        }
+            for (int i = 1; i <= n; i++) {
+                d += java.lang.Math.cos(java.lang.Math.toRadians(i));
+                if (i % 2 == 0) {
+                    z *= java.lang.Math.cos(java.lang.Math.toRadians(i));
+                } else {
+                    z *= java.lang.Math.sin(java.lang.Math.toRadians(i));
+                }
+                SN += d / z;
+            }
+            return SN;
+    }
+    public static double sumWithM(int k){
+        double S = 0, d = 0, z = 1;
+        int i = 0;
+        if (k < 0 ){
+            throw new IllegalArgumentException("k не может быть меньше 0");
+        }
+        while (S < k) {
+            i++;
+            d += java.lang.Math.cos(java.lang.Math.toRadians(i));
+            if (i % 2 == 0) {
+                z *= java.lang.Math.cos(java.lang.Math.toRadians(i));
+            } else {
+                z *= java.lang.Math.sin(java.lang.Math.toRadians(i));
+            }
+            S += d / z;
+        }
+        if (S > k) {
+            S -= d / z;
+        }
+        return S;
+    }
+    public static double nuton(double x, double st){
+        double y0 = java.lang.Math.pow(java.lang.Math.exp(1), java.lang.Math.log(x * (st+1)) / st), y1 = 0, e = 0.01;
+        int n = 0;
+        while (java.lang.Math.abs(y1 - y0) > e) {
+            y1 = 1 / st * ((st - 1) * y0 + x / java.lang.Math.pow(y0, st - 1));
+            y0 = y1;
+            n++;
+            y1 = 1 / st * ((st - 1) * y0 + x / java.lang.Math.pow(y0, st - 1));
+            if ((e >= 0.000001) && (java.lang.Math.abs(y1 - y0) < e)){
+                e /= 10;
+                y0 = java.lang.Math.pow(java.lang.Math.exp(1), java.lang.Math.log(x * (st+1)) / st);
+                y1 = 0;
+                n = 0;
+            }
+        }
+        return y1;
+    }
+    public static int[][] matrixMultiplication(int[][] firstMatrix, int[][] secondMatrix) {
+        int m = firstMatrix.length;
+        int n = secondMatrix[0].length;
+        int[][] result = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < firstMatrix[0].length; k++) {
+                    result[i][j] += firstMatrix[i][k] * secondMatrix[k][j];
+                }
+            }
+        }
+        return result;
+    }
+}
+----------------------
+import java.util.Scanner;
+
+public class NumberTranslation {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите число в исходной системе: ");
+        String number = scanner.nextLine();
+        System.out.print("Введите исходную систему счисления (от 2 до 36): ");
+        int sourceBase = scanner.nextInt();
+        System.out.print("Введите целевую систему счисления (от 2 до 36): ");
+        int targetBase = scanner.nextInt();
+        translate(number,sourceBase,targetBase);
+        System.out.println(translate(number,sourceBase,targetBase));
+    }
+    public static String translate(String number,int sourceBase,int targetBase){
+        String result = convertBase(number, sourceBase, targetBase);
+        return result;
+    }
+
+    public static String convertBase(String number, int sourceBase, int targetBase) {
+        // Перевод числа в 10-ую систему счисления
+        int decimal = convertToDecimal(number, sourceBase);
+        // Перевод числа из 10-ой системы счисления в целевую систему счисления
+        String result = convertFromDecimal(decimal, targetBase);
+        return result;
+    }
+
+    public static int convertToDecimal(String number, int sourceBase) {
+        int decimal = 0;
+        int power = 1;
+        for (int i = number.length() - 1; i >= 0; i--) {
+            int digit = getDigitValue(number.charAt(i));
+            if (digit >= sourceBase) {
+                throw new IllegalArgumentException("Цифра " + number.charAt(i) +
+                        " больше или равна основанию " + sourceBase);
+            }
+            decimal += digit * power;
+            power *= sourceBase;
+        }
+        return decimal;
+    }
+
+    public static String convertFromDecimal(int decimal, int targetBase) {
+        StringBuilder result = new StringBuilder();
+        while (decimal > 0) {
+            int digit = decimal % targetBase;
+            result.append(getDigitSymbol(digit));
+            decimal = decimal / targetBase;
+        }
+        return result.reverse().toString();
+    }
+
+    private static int getDigitValue(char digit) {
+        if (digit >= '0' && digit <= '9') {
+            return digit - '0';
+        } else {
+            return digit - 'A' + 10;
+        }
+    }
+
+    private static char getDigitSymbol(int digitValue) {
+        if (digitValue >= 0 && digitValue <= 9) {
+            return (char) ('0' + digitValue);
+        } else {
+            return (char) ('A' + digitValue - 10);
+        }
+    }
+}
+-------------------
+public class Gauss {
+
+
+    public static void main(String[] args) {
+        double [][] matr = {{2,1,-1,8,7},
+                {-3,-1,2,-11,6},
+                {-2,1,2,-3,5},
+                {1,2,3,4,5}};
+        gauss(matr);
+    }
+    public static double[] gauss(double[][]matr){
+        return printX(Triangle(matr));
+    }
+    public static double [] umn(double [] arr, double number) {
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] *= number;
+        }
+        return arr;
+    }
+
+    public static double [] Vishet(double [] firstArr, double [] secondArr) {
+        double subst;
+        for (int i = 0; i < firstArr.length; i++) {
+            subst = secondArr[i] - firstArr[i];
+            firstArr[i] = subst;
+        }
+        return firstArr;
+    }
+
+    public static double [][] Triangle(double [][] Matrix) {
+        double [][] triangleFormMatr = Matrix.clone();
+        double [] tmpRow;
+        double factor;
+        for (int i = 0; i < triangleFormMatr.length; i++) {
+            tmpRow = triangleFormMatr[i];
+            for (int j = i + 1; j < triangleFormMatr.length; j++) {
+                factor = tmpRow[i]/triangleFormMatr[j][i];
+                triangleFormMatr[j] = umn(triangleFormMatr[j], factor);
+                triangleFormMatr[j] = Vishet(triangleFormMatr[j], tmpRow);
+            }
+        }
+        return triangleFormMatr;
+    }
+
+    static double[] printX(double [][] trianglMatrix) {
+        double [] X = new double[trianglMatrix.length];
+        for (int i = trianglMatrix.length - 1; i >= 0 ; i--) {
+            X[i] =  getRoot(trianglMatrix[i], X, i);
+        }
+        return X;
+    }
+
+    public static double getRoot(double [] otvet, double [] roots, int numRoot) {
+        double summ = 0;
+        for (int i = 0; i < roots.length; i++) {
+            if (i != numRoot)
+                summ += otvet[i] * roots[i];
+        }
+        return (otvet[otvet.length - 1] - summ)/otvet[numRoot];
+    }
+}
+--------------------------
+import java.util.Scanner;
+public class HitinOblast {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Введите координату x");
+        double x = scan.nextDouble();
+        System.out.println("Введите координату y");
+        double y = scan.nextDouble();
+        answer(x,y);
+    }
+
+    public static boolean MainO(double x, double y) {
+        if ((x < 0) && (y >= 0) && (Math.pow(x, 2) + Math.pow(y, 2) <= 36)) {
+            if (Math.pow((x + 3), 2) + Math.pow((y - 3), 2) < 1) {
+                return false;
+            } else {
+                if ((x > -5) && (y >= 0) && (y < (-1 / 3f) * x + (1 / 3f)) && (x<-2)) {
+                    return false;
+                } else {
+                    if ((x < 0) && (y >= 0) && (y < (3 / 2f) * x + 4) && (x>-2)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean right(double x, double y) {
+        if ((x >= 0) && (y <= 4) && (y >= 0) && (y >= (-1 / 2f) * x + 1) && (y <= (-4 / 3f) * x + (20 / 3f))) {
+            if (Math.pow((x - 2), 2) + Math.pow((y - 2), 2) < 1) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+
+    }
+    public static double answer(double x, double y){
+        if (MainO(x,y) || right(x,y)){
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+}
+-------------------------
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import  org.testng.annotations.DataProvider;
+
+public class TestUnix {
+    @Test(groups = "Math", expectedExceptions = IllegalArgumentException.class)
+    public static void CombinationTest() {
+        final int FIRST_NUMBER = -1;
+        final int SECOND_NUMBER = 5;
+        double expectedRecult = 21;
+        double actualRecult;
+
+        actualRecult = Mathematics.combination(FIRST_NUMBER, SECOND_NUMBER);
+        Assert.assertEquals(actualRecult, expectedRecult);
+    }
+
+    @Test(groups = {"Math", "Row"}, expectedExceptions = IllegalArgumentException.class)
+    public static void SumWithNTest() {
+        final int FIRST_NUMBER = -4;
+        double expectedRecult = 171.9135325295608;
+        double actualRecult;
+
+        actualRecult = Mathematics.sumWithN(FIRST_NUMBER);
+        Assert.assertEquals(actualRecult, expectedRecult);
+    }
+
+    @Test(groups = {"Math", "Row"}, expectedExceptions = IllegalArgumentException.class)
+    public static void SumWithMTest() {
+        final int FIRST_NUMBER = -2;
+        double expectedRecult = 57.289961630759436;
+        double actualRecult;
+
+        actualRecult = Mathematics.sumWithM(FIRST_NUMBER);
+        Assert.assertEquals(actualRecult, expectedRecult);
+    }
+
+    @Test(groups = "Math")
+    public static void NutonTest() {
+        final int FIRST_NUMBER = 5;
+        final int SECOND_NUMBER = 5;
+        double expectedRecult = 1.379729661461215;
+        double actualrecult;
+
+        actualrecult = Mathematics.nuton(FIRST_NUMBER, SECOND_NUMBER);
+        Assert.assertEquals(actualrecult, expectedRecult);
+    }
+
+    @Test(groups = {"String", "Multiply"})
+    public static void MyltiplyStringTest() {
+        final String FIRST_NUMBER = "55";
+        double expectedRecult = 25;
+        double actualRecult;
+
+        actualRecult = Strings.multyplyString(FIRST_NUMBER);
+        Assert.assertEquals(actualRecult, expectedRecult);
+    }
+
+    @Test(groups = "Oblast")
+    public static void HitinOblastTest() {
+        final int FIRST_NUMBER = 2;
+        final int SECOND_NUMBER = 1;
+        double expectedRecult = 1;
+        double actualRecult;
+
+        actualRecult = HitinOblast.answer(FIRST_NUMBER, SECOND_NUMBER);
+        Assert.assertEquals(actualRecult, expectedRecult);
+    }
+
+    @Test(groups = {"Math", "Multiply", "Matrix"})
+    public static void MatrixMyltiplyTest() {
+        final int[][] FIRST_NUMBER = {{1, 2, 3}, {4, 5, 6}};
+        final int[][] SECOND_NUMBER = {{7, 8}, {9, 10}, {11, 12}};
+        int[][] expectedRecult = {{58, 64}, {139, 154}};
+        int[][] actualRecult;
+
+        actualRecult = Mathematics.matrixMultiplication(FIRST_NUMBER, SECOND_NUMBER);
+        Assert.assertEquals(actualRecult, expectedRecult);
+    }
+
+    @Test(groups = "Matrix")
+    public static void GaussTest() {
+        final double[][] FIRST_NUMBER = {{2, 2, 6}, {6, 2, 7}};
+        double[] expectedRecult = {0.25, 2.75};
+        double[] actualRecult;
+
+        actualRecult = Gauss.gauss(FIRST_NUMBER);
+        Assert.assertEquals(actualRecult, expectedRecult);
+    }
+
+    @Test(groups = "Translate System", expectedExceptions = IllegalArgumentException.class)
+    public static void TranslateTest() {
+        final String FIRST_NUMBER = "3fga";
+        final int SECOND_NUMBER = 4;
+        final int THIRD_NUMBER = 2;
+        String expectedRecult = "11";
+        String actualRecult;
+
+        actualRecult = NumberTranslation.translate(FIRST_NUMBER, SECOND_NUMBER, THIRD_NUMBER);
+        Assert.assertEquals(actualRecult, expectedRecult);
+    }
+}
+-----------------------------
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE suite
+        SYSTEM  "http://testng.org/testng-1.0.dtd">
+<suite name="Row-Oblast Fast Test">
+    <test name="Row Test">
+        <groups>
+            <run>
+                <include name="Row"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="TestUnix"/>
+        </classes>
+    </test>
+    <test name="Oblast Test">
+        <groups>
+            <run>
+                <include name="Oblast"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="TestUnix"/>
+        </classes>
+    </test>
+</suite>
+
+--------------------
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE suite
+        SYSTEM  "http://testng.org/testng-1.0.dtd">
+    <suite name="Mathematic Long Test Suite">
+        <test name="Mathematic">
+            <groups>
+                <run>
+                    <include name="Math"/>
+                </run>
+            </groups>
+            <classes>
+                <class name="TestUnix"/>
+            </classes>
+        </test>
+        <test name="Multiply">
+            <groups>
+                <run>
+                    <include name="Multiply"/>
+                </run>
+            </groups>
+            <classes>
+                <class name="TestUnix"/>
+            </classes>
+        </test>
+    </suite>
+
+
+----------------------
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE suite
+        SYSTEM  "http://testng.org/testng-1.0.dtd">
+<suite name="String-Translate System Test">
+    <test name="System Test">
+        <groups>
+            <run>
+                <include name="Translate System"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="TestUnix"/>
+        </classes>
+    </test>
+    <test name="String Test">
+        <groups>
+            <run>
+                <include name="String"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="TestUnix"/>
+        </classes>
+    </test>
+</suite>
+
+----------------------
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE suite
+        SYSTEM  "http://testng.org/testng-1.0.dtd">
+<suite name="Multyply-Matrix Test">
+    <test name="Multi Test">
+        <groups>
+            <run>
+                <include name="Multiply"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="TestUnix"/>
+        </classes>
+    </test>
+    <test name="Matrix Test">
+        <groups>
+            <run>
+                <include name="Matrix"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="TestUnix"/>
+        </classes>
+    </test>
+</suite>
+
+
+---------------------------
